@@ -1,5 +1,4 @@
 #!/bin/bash
-source include_config
 
 # Sysdig
 SYSDIG_SECURE_ENDPOINT=""
@@ -85,8 +84,8 @@ get_aws_ranges() {
   )
 
   # Check if alias already exists
-  if [[ $awsRanges ]]; then
-    echo "Error: No AWS CIDR for AWS ${AWS_SERVICE} are available."
+  if [[ $(jq -r '. | length' <<< $awsRanges) == 0 ]]; then
+    echo "Error: No AWS CIDR for AWS ${AWS_SERVICE} are available in region ${AWS_REGION}."
     exit
   fi
 
